@@ -21,6 +21,11 @@ Cell.prototype.toString = function() {
     return this.row + "_" + this.column;
 };
 
+Cell.prototype.isValid = function() {
+    return this.row < GRID_HEIGHT && this.row >= 0 &&
+           this.column < GRID_WIDTH && this.column >= 0;
+};
+
 function drawGrid() {
     canvas = document.getElementById("canvas");
     context = canvas.getContext("2d");
@@ -51,12 +56,14 @@ function drawGrid() {
 
 function golOnClick(e) {
     var cell = getCursorPosition(e);
-    if (checkCellActive(cell)) {
-        removeActiveLocation(cell);
-    } else {
-        addActiveLocation(cell);
+    if (cell.isValid()) {
+        if (checkCellActive(cell)) {
+            removeActiveLocation(cell);
+        } else {
+            addActiveLocation(cell);
+        }
+        drawGrid();
     }
-    drawGrid();
 
 }
 
@@ -83,7 +90,36 @@ function getCursorPosition(e) {
 
 function doIteration() {
     console.log("iterating");
+
+    var new_activeLocations = [];
+
+    for (var cell in board.activeLocations) {
+        count = 0;
+        n1s = getNeighbours(board.activeLocations[cell]);
+        for (var neigh in n1s) {
+            if (neigh in board.activeLocations) {
+                count++;
+            } else {
+                count2 = 0;
+                for (var n2 in getNeighbours(n1s[neigh])) {
+                    if (n2 in board.activeLocations) {
+                        count2++;
+                    }
+                }
+                if (count2 === 3) {
+                    new_activeLocations[neigh] = n1s[neigh];
+                }
+            }
+        }
+        if (count === 2 || count === 3) {
+            new_activeLocations[cell.toString()] = board.activeLocations[cell];
+        }
+    }
+
+    board.activeLocations = new_activeLocations;
+    drawGrid();
 }
+
 
 function removeActiveLocation(cell) {
     delete board.activeLocations[cell.toString()];
@@ -106,7 +142,7 @@ var board = new Board();
 var on = false;
 
 
-function foreverLoop(maxTimePerChunk) {
+function foreverLoop() {
     var index = 0;
 
     function doOne() {
@@ -120,6 +156,28 @@ function foreverLoop(maxTimePerChunk) {
     doOne();
 }
 
+function getNeighbours(cell) {
+
+    var neighbours = [];
+
+    for (var row = -1; row < 2; row++) {
+        for (var col = -1; col < 2; col++) {
+            if (row === 0 && col === 0) {
+                continue;
+            }
+            var x = cell.row + row;
+            var y = cell.column + col;
+
+            x = x < 0 ? GRID_HEIGHT-1 : x%GRID_HEIGHT;
+            y = y < 0 ? GRID_WIDTH-1 : y%GRID_WIDTH;
+            neigh_cell = new Cell(x, y);
+            neighbours[neigh_cell.toString()] = neigh_cell;
+
+        }
+    }
+
+    return neighbours;
+}
 // Process interations in chunks
 // function foreverLoop(maxTimePerChunk) {
 //     maxTimePerChunk = maxTimePerChunk;
@@ -141,8 +199,4 @@ function foreverLoop(maxTimePerChunk) {
 //     doChunk();
 // }
 
-foreverLoop(200);
-
-// Board.prototype.someFunction = function() {
-//     return "something";
-// };
+foreverLoop();
