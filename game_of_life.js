@@ -75,6 +75,7 @@ function golOnClick(e) {
             drawingActives = true;
         }
     }
+    golOnMouseMove(e);
 
 }
 
@@ -193,6 +194,17 @@ function foreverLoop() {
         setTimeout(doOne, 300);
     }
     doOne();
+}
+
+function drawAShape() {
+    clearBoard();
+    addActiveLocation(new Cell(25,25));
+    addActiveLocation(new Cell(24,25));
+    addActiveLocation(new Cell(26,25));
+    addActiveLocation(new Cell(25,26));
+    addActiveLocation(new Cell(25,24));
+    drawBoard();
+
 }
 
 function getNeighbours(cell) {
