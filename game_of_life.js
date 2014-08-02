@@ -1,12 +1,17 @@
 // Number of cells along x
-var GRID_WIDTH = 50;
+var GRID_WIDTH = 80;
 // Number of cells along y
-var GRID_HEIGHT = 50;
+var GRID_HEIGHT = 80;
 // Size of each cell in pixels
 var CELL_SIZE = 10;
 
 var canvas;
 var context;
+// is a path currently being drawn
+var drawing = false;
+
+// if a path is being drawn, is it for active cells?
+var drawingActives = true;
 
 function Board() {
     this.activeLocations = [];
@@ -26,11 +31,17 @@ Cell.prototype.isValid = function() {
            this.column < GRID_WIDTH && this.column >= 0;
 };
 
-function drawGrid() {
+
+function drawBoard() {
     canvas = document.getElementById("canvas");
     context = canvas.getContext("2d");
+    canvas.width = GRID_WIDTH*CELL_SIZE + 1;
+    canvas.height = GRID_HEIGHT*CELL_SIZE + 1;
     context.clearRect(0, 0, GRID_WIDTH*CELL_SIZE+0.5, GRID_HEIGHT*CELL_SIZE+0.5);
-    canvas.addEventListener('click', golOnClick, false);
+    canvas.addEventListener('mousedown', golOnClick, false);
+    canvas.addEventListener('mousemove', golOnMouseMove, false);
+    // putting this on the document in case the mouse is dragged outside the canvas and released.
+    document.addEventListener('mouseup', golOnMouseUp, false);
 
     for (var x = 0.5; x <= GRID_HEIGHT * CELL_SIZE + 0.5; x += CELL_SIZE) {
         context.moveTo(x, 0);
@@ -56,15 +67,34 @@ function drawGrid() {
 
 function golOnClick(e) {
     var cell = getCursorPosition(e);
+    drawing = true;
     if (cell.isValid()) {
         if (checkCellActive(cell)) {
-            removeActiveLocation(cell);
+            drawingActives = false;
         } else {
-            addActiveLocation(cell);
+            drawingActives = true;
         }
-        drawGrid();
     }
 
+}
+
+function golOnMouseMove(e) {
+    if (!drawing) {
+        return;
+    }
+    var cell = getCursorPosition(e);
+    if (cell.isValid()) {
+        if (drawingActives) {
+            addActiveLocation(cell);
+        } else {
+            removeActiveLocation(cell);
+        }
+        drawBoard();
+    }
+}
+
+function golOnMouseUp(e) {
+    drawing = false;
 }
 
 function getCursorPosition(e) {
@@ -100,6 +130,7 @@ function doIteration() {
             if (neigh in board.activeLocations) {
                 count++;
             } else {
+                // If the neighbour is dead, check if it has 3 live neighbours.
                 count2 = 0;
                 for (var n2 in getNeighbours(n1s[neigh])) {
                     if (n2 in board.activeLocations) {
@@ -117,7 +148,7 @@ function doIteration() {
     }
 
     board.activeLocations = new_activeLocations;
-    drawGrid();
+    drawBoard();
 }
 
 
@@ -134,8 +165,16 @@ function checkCellActive(cell) {
     return cell.toString() in board.activeLocations;
 }
 
-function startIterations(on) {
-    this.on = on;
+function toggleIterations() {
+    this.on = !this.on;
+    var text = this.on ? "Stop" : "Start";
+    document.getElementById("on_off_button").innerHTML = text;
+    document.getElementById("on_off_button").setAttribute('class', 'on_' + this.on);
+}
+
+function clearBoard() {
+    board.activeLocations = [];
+    drawBoard();
 }
 
 var board = new Board();
@@ -178,25 +217,8 @@ function getNeighbours(cell) {
 
     return neighbours;
 }
-// Process interations in chunks
-// function foreverLoop(maxTimePerChunk) {
-//     maxTimePerChunk = maxTimePerChunk;
-//     var index = 0;
-
-//     function now() {
-//         return new Date().getTime();
-//     }
-
-//     function doChunk() {
-//         var startTime = now();
-//         while (on && (now() - startTime) <= maxTimePerChunk) {
-//             doIteration();
-//             ++index;
-//         }
-//         // set Timeout for async iteration
-//         setTimeout(doChunk, 1);
-//     }
-//     doChunk();
-// }
 
 foreverLoop();
+
+// TODO: Refactor Code
+// TODO: Display basic shapes on the page.

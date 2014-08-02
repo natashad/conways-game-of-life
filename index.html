@@ -1,11 +1,44 @@
-<html>
-    <head>
-        <script src="game_of_life.js">
-        </script>
-    </head>
-    <body onload="drawGrid();">
-        <canvas id="canvas" width="600" height="600"></canvas>
-        <button type="button" onClick="startIterations(true);">Start</button>
-        <button type="button" onClick="startIterations(false);">Stop</button>
-    </body>
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Conway's Game of Life</title>
+    <script src="game_of_life.js">
+    </script>
+    <style type="text/css">
+
+        #heading {
+            margin: 0 0 20px 0;
+        }
+
+        #controls {
+            margin: 10px;
+        }
+
+        #controls button {
+            width: 70px;
+            height: 30px;
+            font-size: 105%;
+            margin-left: 10px;
+        }
+
+        #on_off_button.on_true {
+            background-color: #ee0000;
+        }
+        #on_off_button.on_false {
+            background-color: #009900;
+        }
+    </style>
+</head>
+
+<body onload="drawBoard();">
+    <h1 id="heading"> Conway's Game of Life </h1>
+    <div id="controls">
+        <button id="on_off_button" type="button" class="on_false" onClick="toggleIterations();">Start</button>
+        <button id="clear_button" type="button" onClick="clearBoard();">Clear</button>
+    </div>
+    <canvas id="canvas" width="600" height="600"></canvas>
+</body>
 </html>
