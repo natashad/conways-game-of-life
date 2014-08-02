@@ -13,6 +13,15 @@ var drawing = false;
 // if a path is being drawn, is it for active cells?
 var drawingActives = true;
 
+
+var oscillator1 = [[0,0],[1,0],[2,0]];
+var oscillator2 = [[0,1],[0,2],[0,3],[1,0],[1,1],[1,2]];
+var still1 = [[0,0],[0,1],[1,0],[1,1]];
+var cross = [[1,0], [1,1], [0,1], [2,1], [1,2]];
+var glider = [[2,0], [2,1], [2,2], [1,2], [0,1]];
+
+var shapes = [oscillator1, oscillator2, still1, cross, glider];
+
 function Board() {
     this.activeLocations = [];
 }
@@ -198,11 +207,15 @@ function foreverLoop() {
 
 function drawAShape() {
     clearBoard();
-    addActiveLocation(new Cell(25,25));
-    addActiveLocation(new Cell(24,25));
-    addActiveLocation(new Cell(26,25));
-    addActiveLocation(new Cell(25,26));
-    addActiveLocation(new Cell(25,24));
+    var shape = shapes[Math.floor(Math.random() * shapes.length)];
+    var offset_x = Math.floor(Math.random() * GRID_WIDTH);
+    var offset_y = Math.floor(Math.random() * GRID_HEIGHT);
+
+    for (var i = 0; i < shape.length; i++) {
+        addActiveLocation(new Cell((shape[i][0] + offset_x)%GRID_WIDTH, (shape[i][1] + offset_y)%GRID_HEIGHT));
+    }
+
+
     drawBoard();
 
 }
