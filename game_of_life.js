@@ -82,7 +82,7 @@ function getCursorPosition(e) {
 
 
 function doIteration() {
-
+    console.log("iterating");
 }
 
 function removeActiveLocation(cell) {
@@ -98,14 +98,50 @@ function checkCellActive(cell) {
     return cell.toString() in board.activeLocations;
 }
 
+function startIterations(on) {
+    this.on = on;
+}
 
 var board = new Board();
-var on = true;
+var on = false;
 
 
-// while(on) {
-//     doIteration();
+function foreverLoop(maxTimePerChunk) {
+    var index = 0;
+
+    function doOne() {
+        if (on) {
+            doIteration();
+            ++index;
+        }
+        // set Timeout for async iteration
+        setTimeout(doOne, 300);
+    }
+    doOne();
+}
+
+// Process interations in chunks
+// function foreverLoop(maxTimePerChunk) {
+//     maxTimePerChunk = maxTimePerChunk;
+//     var index = 0;
+
+//     function now() {
+//         return new Date().getTime();
+//     }
+
+//     function doChunk() {
+//         var startTime = now();
+//         while (on && (now() - startTime) <= maxTimePerChunk) {
+//             doIteration();
+//             ++index;
+//         }
+//         // set Timeout for async iteration
+//         setTimeout(doChunk, 1);
+//     }
+//     doChunk();
 // }
+
+foreverLoop(200);
 
 // Board.prototype.someFunction = function() {
 //     return "something";
