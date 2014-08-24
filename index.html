@@ -7,8 +7,9 @@
     <title>Conway's Game of Life</title>
     <script src="game_of_life.js">
     </script>
-    <style type="text/css">
 
+    <!-- I'm a bad person who is not using an external stylesheet because I'm lazy. Don't judge me :( -->
+    <style type="text/css">
         #heading {
             margin: 0;
             padding: 0;
@@ -31,6 +32,7 @@
         #on_off_button.on_false {
             background-color: #009900;
         }
+
     </style>
 </head>
 
@@ -41,6 +43,9 @@
         <button id="on_off_button" type="button" class="on_false" onClick="toggleIterations();">Start</button>
         <button id="clear_button" type="button" onClick="clearBoard();">Clear</button>
         <button onClick="drawAShape();">Choose a random shape for me</button>
+        <button onClick="restoreBoardFromMemory();">Restore Board</button>
+
+        </p>Iteration Count: <span id="it_count">0</span></p>
     </div>
     <canvas id="canvas" width="600" height="600"></canvas>
 </body>
