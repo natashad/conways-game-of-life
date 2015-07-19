@@ -5,48 +5,26 @@
 <head>
     <meta charset="utf-8">
     <title>Conway's Game of Life</title>
-    <script src="game_of_life.js">
-    </script>
-
-    <!-- I'm a bad person who is not using an external stylesheet because I'm lazy. Don't judge me :( -->
-    <style type="text/css">
-        #heading {
-            margin: 0;
-            padding: 0;
-        }
-
-        #controls {
-            margin: 10px;
-        }
-
-        #controls button {
-            min-width: 70px;
-            height: 30px;
-            font-size: 105%;
-            margin-left: 10px;
-        }
-
-        #on_off_button.on_true {
-            background-color: #ee0000;
-        }
-        #on_off_button.on_false {
-            background-color: #009900;
-        }
-
-    </style>
+    <script src="game_of_life.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <link href='http://fonts.googleapis.com/css?family=Chicle' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 </head>
 
 <body onload="drawBoard();">
-    <h1 id="heading"> Conway's Game of Life </h1>
-    <p> Instructions: Draw a shape. Hit start. Watch the Game of Life.</p>
-    <div id="controls">
-        <button id="on_off_button" type="button" class="on_false" onClick="toggleIterations();">Start</button>
-        <button id="clear_button" type="button" onClick="clearBoard();">Clear</button>
-        <button onClick="drawAShape();">Choose a random shape for me</button>
-        <button onClick="restoreBoardFromMemory();">Restore Board</button>
+    <div class="container">
+        <h1 id="heading"> Conway's Game of Life </h1>
+        <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" target="_blank">Wikipedia page for Conways Game of Life<a/>
+        <p> Instructions: Draw a shape. Hit start. Watch the Game of Life.</p>
+        <div id="controls">
+            <button id="on_off_button" type="button" class="on_false" onClick="toggleIterations();">Start</button>
+            <button id="clear_button" type="button" onClick="clearBoard();">Clear</button>
+            <button onClick="drawAShape();">Choose a random shape for me</button>
+            <button onClick="restoreBoardFromMemory();">Restore Board</button>
 
-        </p>Iteration Count: <span id="it_count">0</span></p>
+            </p>Iteration Count: <span id="it_count">0</span></p>
+        </div>
+        <canvas id="canvas" width="600" height="600"></canvas>
     </div>
-    <canvas id="canvas" width="600" height="600"></canvas>
 </body>
 </html>

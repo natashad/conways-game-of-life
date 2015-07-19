@@ -78,7 +78,7 @@ function drawBoard() {
         c = board.activeLocations[cell];
         context.beginPath();
         context.rect(c.column*CELL_SIZE + 0.5, c.row*CELL_SIZE+0.5, CELL_SIZE, CELL_SIZE);
-        context.fillStyle = 'black';
+        context.fillStyle = '#005A31';
         context.fill();
     }
 }
@@ -218,7 +218,7 @@ function foreverLoop() {
             index = 0;
         }
         // set Timeout for async iteration
-        setTimeout(doOne, 300);
+        setTimeout(doOne, 150);
     }
     doOne();
 }
