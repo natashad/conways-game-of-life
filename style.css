@@ -1,0 +1,55 @@
+body {
+    background: #E9E9E9;
+    font-family: 'Open Sans', sans-serif;
+}
+
+
+.container {
+    width: 800px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+#heading {
+    margin: 10px;
+    padding: 0;
+    font-size: 40px;
+    font-family: 'Chicle', cursive;
+}
+
+#controls {
+    margin: 10px;
+}
+
+#controls button {
+    min-width: 70px;
+    font-size: 105%;
+    margin-left: 10px;
+    border-radius: 3px;
+    background: white;
+    border: 2px solid #333;
+}
+
+#controls button:hover {
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+#on_off_button.on_true {
+    background-color: red;
+}
+#on_off_button.on_false {
+    background-color: #66FF00;
+}
+
+canvas {
+    background: #F3FAB6;
+}
+
+canvas:hover {
+    cursor: pointer;
+}
+
+canvas:active {
+    cursor: cell;
+}
